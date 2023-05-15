@@ -25,6 +25,18 @@ if [[ "$DOWNLOAD" != "0" ]]; then
 fi
 cd $src
 
+# Fixed config
+: "${MAX_THREADS:=32}"
+: "${ENABLED_MPI:=0}"
+if [[ "$1" == "-mpi" ]]; then
+  ENABLED_MPI="1"
+fi
+# Define macros (dont forget to add here)
+DEFINES=(""
+"-DMAX_THREADS=$MAX_THREADS"
+"-DENABLED_MPI=$ENABLED_MPI"
+)
+
 # Run
 if [[ "$1" == "-mpi" ]]; then
   GCC="mpic++"
@@ -33,7 +45,7 @@ else
   GCC="g++"
   RUN=""
 fi
-$GCC -std=c++17 -O3 -fopenmp main.cxx -o "a$1.out"
+$GCC ${DEFINES[*]} -std=c++17 -O3 -fopenmp main.cxx -o "a$1.out"
 # stdbuf --output=L $RUN ./"a$1.out" ~/Data/soc-Epinions1.mtx   2>&1 | tee -a "$out"
 stdbuf --output=L $RUN ./"a$1.out" ~/Data/indochina-2004.mtx  2>&1 | tee -a "$out"
 # stdbuf --output=L $RUN ./"a$1.out" ~/Data/uk-2002.mtx         2>&1 | tee -a "$out"
