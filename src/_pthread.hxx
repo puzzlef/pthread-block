@@ -19,7 +19,6 @@ using std::vector;
 inline void* parallelBlockHandlerPthread(void *data) {
   using DATA = pair<int, function<void(int)>>;
   const DATA& x = *((DATA*) data);
-  LOG("parallelBlockHandlerPthread()\n");
   x.second(x.first);
   return nullptr;
 }

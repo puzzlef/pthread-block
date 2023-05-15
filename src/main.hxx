@@ -1,7 +1,7 @@
 #pragma once
 #define BUILD  0  // 5 == BUILD_TRACE
 #define OPENMP 1
-#ifdef ENABLE_MPI
+#if ENABLED_MPI!=0
 #define MPI    1
 #endif
 
